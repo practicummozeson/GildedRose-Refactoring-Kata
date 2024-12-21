@@ -3,6 +3,8 @@ from __future__ import print_function
 
 from gilded_rose import *
 
+DEFAULT_DAYS = 2
+
 def main(days):
     items = [
         Item(name="+5 Dexterity Vest", sell_in=10, quality=20),
@@ -28,8 +30,8 @@ def print_day_summary(day, items):
     print("")
 
 if __name__ == "__main__":
-    days = 2
+    days = DEFAULT_DAYS
     import sys
     if len(sys.argv) > 1:
-        days = int(sys.argv[1]) + 1
+        days = max(0, int(sys.argv[1])) + 1
     main(days)
