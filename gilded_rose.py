@@ -7,37 +7,43 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            if item.quality==0 and item.sell_in==0:
-                item.name="fixme"           
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0:
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        item.quality = item.quality - 1
-            else:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
-                    if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                        if item.sell_in < 11:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
-                        if item.sell_in < 6:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
-            if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in = item.sell_in - 1
-            if item.sell_in < 0:
-                if item.name != "Aged Brie":
-                    if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                        if item.quality > 0:
-                            if item.name != "Sulfuras, Hand of Ragnaros":
-                                item.quality = item.quality - 1
-                    else:
-                        item.quality = item.quality - item.quality
-                else:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
+            if item.quality == 0 and item.sell_in == 0:
+                self.update_name(item) 
+            if item.name == "Sulfuras, Hand of Ragnaros":
+                continue
 
+            self.update_sell_in(item)
 
+            update_strategy = {
+                "Aged Brie": self.update_aged_brie,
+                "Backstage passes to a TAFKAL80ETC concert": self.update_backstage_passes,
+            }
+
+            update_func = update_strategy.get(item.name, self.update_normal_item)
+            update_func(item)
+
+    def update_name(self, item):
+        item.name = "fixme"
+
+    def update_sell_in(self, item):
+        item.sell_in -= 1
+
+    def update_aged_brie(self, item):
+        if item.quality < 50:
+            item.quality += 1
+
+    def update_backstage_passes(self, item):
+        if item.sell_in < 1:
+            item.quality = 0
+        elif item.sell_in < 6:
+            item.quality += 2 if item.quality < 49 else 1
+        elif item.sell_in < 11:
+            item.quality += 1 if item.quality < 50 else 0
+
+    def update_normal_item(self, item):
+        if item.quality > 0:
+            item.quality -= 1
+           
 class Item:
     def __init__(self, name, sell_in, quality):
         self.name = name
