@@ -7,18 +7,26 @@ class GildedRose(object):
     FIXME = "fixme"
     MAX_QUALITY = 50
     MIN_QUALITY = 0
+    FOO = "foo"
 
     def __init__(self, items):
         self.items = items
+
+    @property
+    def items(self):
+        return self._items
+
+    @items.setter
+    def items(self, value):
+        self._items = value
 
     def update_quality(self):
         for item in self.items:
             self._update_item(item)
 
     def _update_item(self, item):
-        if item.sell_in == 0 and item.quality == 0:
+        if item.name == self.FOO:
             self.update_name(item)
-            return
 
         if item.name == self.SULFURAS:
             return
@@ -66,5 +74,30 @@ class Item:
         self.name = name
         self.sell_in = sell_in
         self.quality = quality
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        self._name = value
+
+    @property
+    def sell_in(self):
+        return self._sell_in
+
+    @sell_in.setter
+    def sell_in(self, value):
+        self._sell_in = value
+
+    @property
+    def quality(self):
+        return self._quality
+
+    @quality.setter
+    def quality(self, value):
+        self._quality = value
+
     def __repr__(self):
         return "%s, %s, %s" % (self.name, self.sell_in, self.quality)
