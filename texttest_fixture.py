@@ -7,6 +7,7 @@ DEFAULT_DAYS = 2
 
 def main(days):
     items = [
+        Item(name="foo", sell_in=0, quality=0),
         Item(name="+5 Dexterity Vest", sell_in=10, quality=20),
         Item(name="Aged Brie", sell_in=2, quality=0),
         Item(name="Elixir of the Mongoose", sell_in=5, quality=7),
